@@ -3,6 +3,9 @@ var score = 0;
 var lives = 2;
 var powerPellets = 4;
 var dots = 240;
+var level = 1;
+fruit = Math.round(Math.random() * 240);
+fruitpoints = 0;
 
 
 // Define your ghosts here
@@ -34,8 +37,6 @@ var clyde = {
   character: 'Pokey',
   edible: false
 };
-
-
 var ghosts = [inky, blinky, pinky, clyde];
 
 
@@ -54,13 +55,16 @@ function clearScreen() {
 }
 
 function displayStats() {
-  console.log('Score: ' + score + '     Lives: ' + lives);
+  console.log('Level: ' + level + '      Score: ' + score + '     Lives:' + lives);
   console.log('\n\nPower-Pellets: ' + powerPellets);
   console.log('\n\nDots: ' + dots);
 }
 
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
+  if (dots === fruit) {
+    console.log('(f) Eat ' + showFruitName(level));
+  }
   if (dots > 0) {
     console.log('(d) Eat Dot');
   }
@@ -92,23 +96,89 @@ function isEdible(ghost){
   }
 }
 
+function levelup(){
+  if (level > 255) {
+    process.exit;
+  }
+  if (powerPellets < 1 && dots < 1) {
+    level++;
+    dots = 240;
+    powerPellets = 4;
+    ghosts.forEach(function(ghost){
+      ghost.edible = false;
+    });
+    fruit = Math.round(Math.random() * 240);
+  }
+}
 
+function showFruitName(level){
+  switch (level) {
+    case 1:
+      fruitpoints = 100;
+      return 'Cherry';
+      break;
+    case 2:
+      fruitpoints = 300;
+      return 'Strawberry';
+      break;
+    case 3:
+      fruitpoints = 500;
+      return 'Orange';
+      break;
+    case 4:
+      fruitpoints = 500;
+      return 'Orange';
+      break;
+    case 5:
+      fruitpoints = 700;
+      return 'Apple';
+      break;
+    case 6:
+      fruitpoints = 700;
+      return 'Apple';
+      break;
+    case 7:
+      fruitpoints = 1000;
+      return 'Pineapple';
+      break;
+    case 8:
+      fruitpoints = 1000;
+      return 'Pineapple';
+      break;
+    case 9:
+      fruitpoints = 2000;
+      return 'Galaxian Spaceship';
+      break;
+    case 10:
+      fruitpoints = 2000;
+      return 'Galaxian Spaceship';
+      break;
+    case 11:
+      fruitpoints = 3000;
+      return 'Bell';
+      break;
+    case 12:
+      fruitpoints = 3000;
+      return 'Bell';
+      break;
+
+    default:
+      fruitpoints = 5000;
+      return 'Key';
+  }
+}
+
+function eatFruit(){
+  score += fruitpoints
+  fruit = Math.round(Math.random() * dots);
+}
 
 // Menu Options
-function eatDot() {
+function eatDot(number) {
   console.log('\nChomp!');
-  score += 10;
-  dots--;
-}
-function eatTenDots(){
-  console.log('\nTenChomp!');
-  score += 100;
-  dots -= 10;
-}
-function eatHundredDots(){
-  console.log('\nHundredChomp!');
-  score += 1000;
-  dots -= 100;
+  score += number * 10;
+  dots-= number;
+  levelup();
 }
 function eatGhost(ghost){
   if (ghost.edible) {
@@ -135,6 +205,7 @@ function eatPowerPellet(){
   ghosts.forEach(function(ghost){
     ghost.edible = true;
   });
+  levelup();
 }
 
 function lifecheck(lives){
@@ -153,23 +224,30 @@ function processInput(key) {
     case 'q':
       process.exit();
       break;
+    case 'f':
+      if (dots === fruit) {
+        eatFruit();
+      } else {
+        console.log('\nNo bonus for you Pac-Man.');
+      }
+      break;
     case 'd':
       if (dots > 0) {
-        eatDot();
+        eatDot(1);
       } else {
         console.log('\nNot enough dots left Pac-Man.');
       }
       break;
     case 't':
       if (dots > 9) {
-        eatTenDots();
+        eatDot(10);
       } else {
         console.log('\nNot enough dots left Pac-Man.');
       }
       break;
     case 'h':
       if (dots > 99) {
-        eatHundredDots();
+        eatDot(100);
       } else {
         console.log('\nNot enough dots left Pac-Man.');
       }
