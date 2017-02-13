@@ -63,10 +63,10 @@ function displayMenu() {
   if (powerPellets > 0) {
     console.log('(p) Eat Power-Pellet');
   }
-  console.log('(1) Eat Inky');
-  console.log('(2) Eat Blinky');
-  console.log('(3) Eat Pinky');
-  console.log('(4) Eat Clyde');
+  console.log('(1) Eat Inky' + isEdible(inky));
+  console.log('(2) Eat Blinky' + isEdible(blinky));
+  console.log('(3) Eat Pinky' + isEdible(pinky));
+  console.log('(4) Eat Clyde' + isEdible(clyde));
   console.log('(q) Quit');
 }
 
@@ -74,6 +74,14 @@ function displayPrompt() {
   // process.stdout.write is similar to console.log except it doesn't add a new line after the text
   process.stdout.write('\nWaka Waka :v '); // :v is the Pac-Man emoji.
 }
+function isEdible(ghost){
+  if (ghost.edible) {
+    return ' (edible)';
+  } else {
+    return ' (inedible)';
+  }
+}
+
 
 
 // Menu Options
@@ -85,7 +93,7 @@ function eatGhost(ghost){
   if (ghost.edible) {
     score += 200;
     ghost.edible = false;
-    console.log('\nPac-Man has eaten ' + ghost.name);
+    console.log('\nPac-Man has eaten ' + ghost.name + ', who was ' + ghost.character + '.');
   }else {
     lives--;
     console.log('\nPac-Man has eaten a ghost!');
