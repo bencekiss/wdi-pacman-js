@@ -8,6 +8,8 @@ var fruit = Math.round(Math.random() * 240);
 var fruitpoints = 0;
 var fruitAppearance = 0;
 var maxFruitPerLevel = 5;
+var powerPelletConsumed = false;
+
 
 
 // Define your ghosts here
@@ -76,7 +78,7 @@ function displayMenu() {
   if (dots > 99) {
     console.log('(h) Eat 100 dots');
   }
-  if (powerPellets > 0) {
+  if (powerPellets > 0 && powerPelletConsumed === false) {
     console.log('(p) Eat Power-Pellet');
   }
   console.log('(1) Eat Inky' + isEdible(inky));
@@ -84,7 +86,7 @@ function displayMenu() {
   console.log('(3) Eat Pinky' + isEdible(pinky));
   console.log('(4) Eat Clyde' + isEdible(clyde));
   console.log('(q) Quit');
-  console.log('\n\n\n\n' + fruit);
+  // console.log('\n\n\n\n' + fruit);
 }
 
 function displayPrompt() {
@@ -107,6 +109,7 @@ function levelup(){
     level++;
     dots = 240;
     powerPellets = 4;
+    powerPelletConsumed = false;
     ghosts.forEach(function(ghost){
       ghost.edible = false;
     });
@@ -207,14 +210,29 @@ function eatGhost(ghost){
     lifecheck(lives);
 
   }
+  if (consumedGhosts() >= 4) {
+    powerPelletConsumed = false;
+  }
 }
+function consumedGhosts(){
+  consumed = 0;
+  ghosts.forEach(function(ghost){
+    if (ghost.edible === false) {
+      consumed++;
+    }
+  });
 
+  return consumed;
+}
 function eatPowerPellet(){
+
   score += 50;
   powerPellets -= 1;
+  powerPelletConsumed = true;
   ghosts.forEach(function(ghost){
     ghost.edible = true;
   });
+
   levelup();
 }
 
@@ -264,7 +282,11 @@ function processInput(key) {
       break;
     case 'p':
       if (powerPellets > 0) {
-        eatPowerPellet();
+        if (powerPelletConsumed === false) {
+          eatPowerPellet();
+        }else{
+          console.log('\nEat up all ghosts before you can eat a Power-Pellet Pac-Man');
+        }
       }else {
         console.log("\nYou've eaten it all up Pac-Man.");
       }
