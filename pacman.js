@@ -82,12 +82,16 @@ function eatGhost(ghost){
   }else {
     lives--;
     console.log('\nPac-Man has eaten a ghost!');
-    if (lives <= 0) {
-      setTimeout(function(){
-        console.log('\nThe '+ ghost.colour + ' ' + ghost.name + ' killed Pac-Man.');
-        process.exit();
-      },100);
-    }
+    lifecheck(lives);
+    
+  }
+}
+
+function lifecheck(lives){
+  if (lives < 0) {
+    setTimeout(process.exit, 100);
+  }else {
+
   }
 }
 
