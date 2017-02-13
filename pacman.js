@@ -225,15 +225,22 @@ function consumedGhosts(){
   return consumed;
 }
 function eatPowerPellet(){
-
   score += 50;
   powerPellets -= 1;
   powerPelletConsumed = true;
   ghosts.forEach(function(ghost){
     ghost.edible = true;
   });
+  setTimeout(timeIsOut, 10000);
 
   levelup();
+}
+function timeIsOut(){
+  ghosts.forEach(function(ghost){
+    ghost.edible = false;
+  });
+  powerPelletConsumed = false;
+  drawScreen();
 }
 
 function lifecheck(lives){
