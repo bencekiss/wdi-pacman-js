@@ -32,7 +32,9 @@ var clyde = {
   character: 'Pokey',
   edible: false
 };
-// replace this comment with your four ghosts setup as objects
+
+
+var ghosts = [inky, blinky, pinky, clyde];
 
 
 // Draw the screen functionality
