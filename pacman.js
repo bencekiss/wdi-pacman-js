@@ -2,6 +2,7 @@
 var score = 0;
 var lives = 2;
 var powerPellets = 4;
+var dots = 240;
 
 
 // Define your ghosts here
@@ -55,11 +56,20 @@ function clearScreen() {
 function displayStats() {
   console.log('Score: ' + score + '     Lives: ' + lives);
   console.log('\n\nPower-Pellets: ' + powerPellets);
+  console.log('\n\nDots: ' + dots);
 }
 
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
-  console.log('(d) Eat Dot');
+  if (dots > 0) {
+    console.log('(d) Eat Dot');
+  }
+  if (dots > 9) {
+    console.log('(t) Eat 10 dots');
+  }
+  if (dots > 99) {
+    console.log('(h) Eat 100 dots');
+  }
   if (powerPellets > 0) {
     console.log('(p) Eat Power-Pellet');
   }
@@ -88,6 +98,17 @@ function isEdible(ghost){
 function eatDot() {
   console.log('\nChomp!');
   score += 10;
+  dots--;
+}
+function eatTenDots(){
+  console.log('\nTenChomp!');
+  score += 100;
+  dots -= 10;
+}
+function eatHundredDots(){
+  console.log('\nHundredChomp!');
+  score += 1000;
+  dots -= 100;
 }
 function eatGhost(ghost){
   if (ghost.edible) {
@@ -127,7 +148,25 @@ function processInput(key) {
       process.exit();
       break;
     case 'd':
-      eatDot();
+      if (dots > 0) {
+        eatDot();
+      } else {
+        console.log('\nNot enough dots left Pac-Man.');
+      }
+      break;
+    case 't':
+      if (dots > 9) {
+        eatTenDots();
+      } else {
+        console.log('\nNot enough dots left Pac-Man.');
+      }
+      break;
+    case 'h':
+      if (dots > 99) {
+        eatHundredDots();
+      } else {
+        console.log('\nNot enough dots left Pac-Man.');
+      }
       break;
     case 'p':
       if (powerPellets > 0) {
