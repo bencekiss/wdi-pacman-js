@@ -112,7 +112,13 @@ function eatHundredDots(){
 }
 function eatGhost(ghost){
   if (ghost.edible) {
-    score += 200;
+    var eatable = 4
+    ghosts.forEach(function(ghosty){
+      if (ghosty.edible) {
+        eatable --;
+      }
+    });
+    score += 200 * Math.pow(2, eatable);
     ghost.edible = false;
     console.log('\nPac-Man has eaten ' + ghost.name + ', who was ' + ghost.character + '.');
   }else {
