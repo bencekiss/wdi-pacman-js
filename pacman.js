@@ -4,8 +4,10 @@ var lives = 2;
 var powerPellets = 4;
 var dots = 240;
 var level = 1;
-fruit = Math.round(Math.random() * 240);
-fruitpoints = 0;
+var fruit = Math.round(Math.random() * 240);
+var fruitpoints = 0;
+var fruitAppearance = 0;
+var maxFruitPerLevel = 5;
 
 
 // Define your ghosts here
@@ -82,6 +84,7 @@ function displayMenu() {
   console.log('(3) Eat Pinky' + isEdible(pinky));
   console.log('(4) Eat Clyde' + isEdible(clyde));
   console.log('(q) Quit');
+  console.log('\n\n\n\n' + fruit);
 }
 
 function displayPrompt() {
@@ -107,6 +110,7 @@ function levelup(){
     ghosts.forEach(function(ghost){
       ghost.edible = false;
     });
+    fruitAppearance = 0;
     fruit = Math.round(Math.random() * 240);
   }
 }
@@ -170,7 +174,13 @@ function showFruitName(level){
 
 function eatFruit(){
   score += fruitpoints
-  fruit = Math.round(Math.random() * dots);
+  fruitAppearance++;
+
+  if (fruitAppearance >= maxFruitPerLevel) {
+    fruit = Math.round(Math.random() * 240);
+  }else {
+    fruit = Math.round(Math.random() * dots);
+  }
 }
 
 // Menu Options
